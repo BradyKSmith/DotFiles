@@ -14,6 +14,7 @@
     git
     htop
     nodejs_24
+    opencode
     pyenv
     python311
     starship
@@ -24,6 +25,7 @@
   ];
 
   xdg.configFile."starship.toml".source = ../starship.toml;
+  xdg.configFile."aerospace/aerospace.toml".source = ../aerospace.toml;
   xdg.configFile."television/config.toml".source = ../television/config.toml;
   xdg.configFile."television/cable/editor-files.toml".source = ../television/cable/editor-files.toml;
   xdg.configFile."television/cable/editor-dirs.toml".source = ../television/cable/editor-dirs.toml;

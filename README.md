@@ -1,10 +1,10 @@
-# nix-darwin blank starter
+# Brady's dotfiles
 
-This repository is a minimal flake-based macOS setup with:
+This repo is a flake-based macOS setup built with:
 
 - `nix-darwin` for system configuration
-- `home-manager` for user-level packages and shell setup
-- `zsh` enabled, but no extra tools or shell customizations yet
+- `home-manager` for user shell and CLI tooling
+- Homebrew integration for macOS apps that make sense to manage at the system layer
 
 It is currently configured for:
 
@@ -12,51 +12,72 @@ It is currently configured for:
 - user: `brady`
 - architecture: `aarch64-darwin`
 
-## Why `darwin-rebuild` was missing
+## What lives here
 
-That command usually is not on your `PATH` until after the first successful `switch`.
-For the first activation, run it through `nix run` from this repository.
+- [flake.nix](/Users/brady/dotfiles/flake.nix): top-level flake wiring and inputs
+- [hosts/Bradys-MacBook-Pro/default.nix](/Users/brady/dotfiles/hosts/Bradys-MacBook-Pro/default.nix): macOS host config, including Homebrew casks
+- [home/brady.nix](/Users/brady/dotfiles/home/brady.nix): user packages, Zsh setup, aliases, and tracked config files
+- [starship.toml](/Users/brady/dotfiles/starship.toml): Starship prompt config
+- [tmux.conf](/Users/brady/dotfiles/tmux.conf): tmux config
+- [aerospace.toml](/Users/brady/dotfiles/aerospace.toml): AeroSpace config
+- [television/config.toml](/Users/brady/dotfiles/television/config.toml): Television config
+- [television/cable/editor-files.toml](/Users/brady/dotfiles/television/cable/editor-files.toml): Television file-search channel
+- [television/cable/editor-dirs.toml](/Users/brady/dotfiles/television/cable/editor-dirs.toml): Television directory-search channel
 
-## First bootstrap
+## Current setup
 
-From `/Users/brady/dotfiles`:
+This repo currently manages:
+
+- Zsh with Starship prompt
+- syntax highlighting
+- `zoxide` for smarter `cd`
+- Neovim with `vim` alias
+- CLI tools like `git`, `azure-cli`, `eza`, `fd`, `bat`, `television`, `tmux`, `htop`, `wget`, `gawk`, `opencode`
+- Nix-installed `python311` and `nodejs_24`
+- optional version-manager tools like `pyenv`
+- tracked configs for Starship, tmux, AeroSpace, and Television
+
+## Bootstrap
+
+On a fresh Mac, the first activation is:
 
 ```bash
 sudo nix --extra-experimental-features 'nix-command flakes' run nix-darwin/nix-darwin-25.11#darwin-rebuild -- switch --flake .#Bradys-MacBook-Pro
 ```
 
-If your shell still does not see the command afterward, open a new terminal window.
-
-## Daily usage
-
-After the first switch succeeds:
+After that:
 
 ```bash
 sudo darwin-rebuild switch --flake ~/dotfiles#Bradys-MacBook-Pro
 ```
 
-Or use the alias from Home Manager:
+Or just:
 
 ```bash
 rebuild
 ```
 
-## What this gives you
+## Homebrew apps
 
-- a working flake-based macOS configuration
-- `zsh` managed through Nix
-- an intentionally blank starting point so you can add tools gradually
+Homebrew app management is configured in [hosts/Bradys-MacBook-Pro/default.nix](/Users/brady/dotfiles/hosts/Bradys-MacBook-Pro/default.nix).
 
-## Common next edits
+Right now:
 
-- Add machine-wide packages in `hosts/Bradys-MacBook-Pro/default.nix`
-- Add user packages and shell config in `home/brady.nix`
+- `maccy` is actively managed
+- several GUI apps are documented but commented out so they can be re-enabled later on a fresh Mac or after an intentional migration to Homebrew ownership
+
+This is deliberate. On an existing machine, Homebrew may not recognize manually installed apps as cask-owned, which can lead to reinstall/conflict behavior during rebuilds.
 
 ## Useful commands
 
 ```bash
-nix fmt
 nix flake check
+nix fmt
+git status --short
 ```
 
-`nix flake check` will need network access the first time because the inputs must be fetched.
+## Notes for future me
+
+- If a GUI app already exists in `/Applications`, check whether Homebrew recognizes it before uncommenting its cask.
+- If publishing this repo publicly, review machine-specific paths and identifiers first.
+- Keep tracked config files in this repo when possible so a fresh machine can be recreated with fewer manual steps.
