@@ -1,0 +1,13 @@
+[metadata]
+name = "editor-files"
+description = "Search files and open the selection in your editor"
+requirements = ["fd", "bat"]
+
+[source]
+command = "fd -t f"
+
+[preview]
+command = "bat -n --color=always '{}'"
+
+[ui]
+preview_panel = { size = 60, scrollbar = true }
