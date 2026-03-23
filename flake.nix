@@ -1,13 +1,8 @@
 {
-  description = "Brady's macOS configuration with nix-darwin and home-manager";
+  description = "Brady's macOS configuration with Home Manager";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
-
-    nix-darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
@@ -16,28 +11,20 @@
   };
 
   outputs =
-    inputs@{ self, nix-darwin, home-manager, nixpkgs }:
+    inputs@{ self, home-manager, nixpkgs }:
     let
       system = "aarch64-darwin";
-      hostname = "Bradys-MacBook-Pro";
       username = "brady";
       specialArgs = {
-        inherit inputs self system hostname username;
+        inherit inputs self system username;
       };
     in
     {
-      darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
-        inherit system specialArgs;
+      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
+        extraSpecialArgs = specialArgs;
         modules = [
-          ./hosts/${hostname}
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "before-home-manager";
-            home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users.${username} = import ./home/${username}.nix;
-          }
+          ./home/${username}.nix
         ];
       };
 

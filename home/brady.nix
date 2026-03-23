@@ -94,7 +94,7 @@ in
       }
     '';
     shellAliases = {
-      rebuild = "sudo darwin-rebuild switch --flake ~/dotfiles#Bradys-MacBook-Pro";
+      rebuild = "home-manager switch --flake ~/dotfiles#brady";
       vim = "nvim";
       cd = "z";
       hda = "cd ~/Documents/hdaDevelopment";

@@ -2,21 +2,18 @@
 
 This repo is a flake-based macOS setup built with:
 
-- `nix-darwin` for system configuration
 - `home-manager` for user shell and CLI tooling
-- Homebrew integration for macOS apps that make sense to manage at the system layer
 
 It is currently configured for:
 
-- hostname: `Bradys-MacBook-Pro`
 - user: `brady`
 - architecture: `aarch64-darwin`
 
 ## What lives here
 
 - [flake.nix](/Users/brady/dotfiles/flake.nix): top-level flake wiring and inputs
-- [hosts/Bradys-MacBook-Pro/default.nix](/Users/brady/dotfiles/hosts/Bradys-MacBook-Pro/default.nix): macOS host config, including Homebrew casks
 - [home/brady.nix](/Users/brady/dotfiles/home/brady.nix): user packages, Zsh setup, aliases, and tracked config files
+- [apps.md](/Users/brady/dotfiles/apps.md): tracked macOS apps and install notes
 - [starship.toml](/Users/brady/dotfiles/starship.toml): Starship prompt config
 - [tmux.conf](/Users/brady/dotfiles/tmux.conf): tmux config
 - [aerospace.toml](/Users/brady/dotfiles/aerospace.toml): AeroSpace config
@@ -42,13 +39,13 @@ This repo currently manages:
 On a fresh Mac, the first activation is:
 
 ```bash
-sudo nix --extra-experimental-features 'nix-command flakes' run nix-darwin/nix-darwin-25.11#darwin-rebuild -- switch --flake .#Bradys-MacBook-Pro
+nix --extra-experimental-features 'nix-command flakes' run home-manager/release-25.11 -- switch --flake .#brady
 ```
 
 After that:
 
 ```bash
-sudo darwin-rebuild switch --flake ~/dotfiles#Bradys-MacBook-Pro
+home-manager switch --flake ~/dotfiles#brady
 ```
 
 Or just:
@@ -57,17 +54,9 @@ Or just:
 rebuild
 ```
 
-## Homebrew apps
+## macOS apps
 
-Homebrew app management is configured in [hosts/Bradys-MacBook-Pro/default.nix](/Users/brady/dotfiles/hosts/Bradys-MacBook-Pro/default.nix).
-
-Right now:
-
-- `maccy` is actively managed
-- `obsidian` is actively managed
-- several GUI apps are documented but commented out so they can be re-enabled later on a fresh Mac or after an intentional migration to Homebrew ownership
-
-This is deliberate. On an existing machine, Homebrew may not recognize manually installed apps as cask-owned, which can lead to reinstall/conflict behavior during rebuilds.
+Track macOS apps and install notes in [apps.md](/Users/brady/dotfiles/apps.md).
 
 ## Useful commands
 
