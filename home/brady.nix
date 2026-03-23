@@ -1,4 +1,9 @@
-{ pkgs, username, ... }:
+{ pkgs, username, lib, ... }:
+let
+  directInstallCommands = [
+    "curl -fsSL https://opencode.ai/install | bash"
+  ];
+in
 {
   home.username = username;
   home.homeDirectory = "/Users/${username}";
@@ -13,15 +18,16 @@
     azure-cli
     bat
     coreutils
+    curl
     eza
     fd
     gawk
     git
     htop
+    kubectl
     nodejs_24
-    opencode
     pyenv
-    python311
+    python313
     starship
     television
     tmux
@@ -29,8 +35,14 @@
     zoxide
   ];
 
+  home.activation.directInstalls = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    for command in ${lib.concatStringsSep " " (map lib.escapeShellArg directInstallCommands)}; do
+      echo "Running direct install: $command"
+      /bin/sh -c "$command"
+    done
+  '';
+
   xdg.configFile."starship.toml".source = ../starship.toml;
-  xdg.configFile."aerospace/aerospace.toml".source = ../aerospace.toml;
   xdg.configFile."television/config.toml".source = ../television/config.toml;
   xdg.configFile."television/cable/editor-files.toml".source = ../television/cable/editor-files.toml;
   xdg.configFile."television/cable/editor-dirs.toml".source = ../television/cable/editor-dirs.toml;

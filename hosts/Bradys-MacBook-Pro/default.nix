@@ -25,7 +25,6 @@
     # declaratively, but avoid adopting or conflicting with apps that are
     # already installed manually on this machine.
     taps = [
-      "nikitabobko/tap"
       # "netbirdio/tap"
     ];
     onActivation = {
@@ -36,7 +35,8 @@
     casks = [
       # Re-enable these on a fresh Mac, or after you intentionally migrate the
       # app to Homebrew ownership:
-      "nikitabobko/tap/aerospace"
+      "codex"
+      "obsidian"
       # "ghostty"
       # "chatgpt"
       # "docker-desktop"

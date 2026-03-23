@@ -64,6 +64,7 @@ Homebrew app management is configured in [hosts/Bradys-MacBook-Pro/default.nix](
 Right now:
 
 - `maccy` is actively managed
+- `obsidian` is actively managed
 - several GUI apps are documented but commented out so they can be re-enabled later on a fresh Mac or after an intentional migration to Homebrew ownership
 
 This is deliberate. On an existing machine, Homebrew may not recognize manually installed apps as cask-owned, which can lead to reinstall/conflict behavior during rebuilds.
